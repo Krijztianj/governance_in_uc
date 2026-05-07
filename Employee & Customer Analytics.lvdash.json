@@ -1,0 +1,217 @@
+{
+  "datasets": [
+    {
+      "name": "employees",
+      "displayName": "Employees",
+      "queryLines": [
+        "SELECT\n",
+        "\t*\n",
+        "FROM\n",
+        "\tuc_demo.sample.employees"
+      ],
+      "catalog": "uc_demo",
+      "schema": "sample"
+    },
+    {
+      "name": "customer_ltv",
+      "displayName": "Customer Lifetime Value",
+      "config": {
+        "version": 1.1,
+        "source": "uc_demo.sample.customers",
+        "dimensions": [
+          {
+            "name": "region",
+            "expr": "region"
+          },
+          {
+            "name": "tier",
+            "expr": "tier"
+          },
+          {
+            "name": "name",
+            "expr": "full_name"
+          }
+        ],
+        "measures": [
+          {
+            "name": "total_lifetime_value",
+            "expr": "SUM(lifetime_value)",
+            "displayName": "Total Lifetime Value"
+          },
+          {
+            "name": "customer_count",
+            "expr": "COUNT(*)",
+            "displayName": "Customer Count"
+          }
+        ]
+      }
+    }
+  ],
+  "pages": [
+    {
+      "name": "cbfec757",
+      "displayName": "Demo page",
+      "layout": [
+        {
+          "widget": {
+            "name": "employee_table",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "employees",
+                  "fields": [
+                    {
+                      "name": "emp_id",
+                      "expression": "`emp_id`"
+                    },
+                    {
+                      "name": "full_name",
+                      "expression": "`full_name`"
+                    },
+                    {
+                      "name": "email",
+                      "expression": "`email`"
+                    },
+                    {
+                      "name": "cpr",
+                      "expression": "`cpr`"
+                    },
+                    {
+                      "name": "salary",
+                      "expression": "`salary`"
+                    },
+                    {
+                      "name": "country",
+                      "expression": "`country`"
+                    },
+                    {
+                      "name": "department",
+                      "expression": "`department`"
+                    },
+                    {
+                      "name": "hire_date",
+                      "expression": "`hire_date`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Employee Information (PII Masking)",
+                "showTitle": true
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "emp_id",
+                    "displayName": "Employee ID"
+                  },
+                  {
+                    "fieldName": "full_name",
+                    "displayName": "Full Name"
+                  },
+                  {
+                    "fieldName": "email",
+                    "displayName": "Email (PII)"
+                  },
+                  {
+                    "fieldName": "cpr",
+                    "displayName": "CPR (PII)"
+                  },
+                  {
+                    "fieldName": "salary",
+                    "displayName": "Salary"
+                  },
+                  {
+                    "fieldName": "country",
+                    "displayName": "Country"
+                  },
+                  {
+                    "fieldName": "department",
+                    "displayName": "Department"
+                  },
+                  {
+                    "fieldName": "hire_date",
+                    "displayName": "Hire Date"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "ltv_by_region",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "customer_ltv",
+                  "fields": [
+                    {
+                      "name": "region",
+                      "expression": "`region`"
+                    },
+                    {
+                      "name": "measure(total_lifetime_value)",
+                      "expression": "MEASURE(`total_lifetime_value`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Total Customer Lifetime Value by Region",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "region",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_lifetime_value)",
+                  "displayName": "Total Lifetime Value",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 12,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
