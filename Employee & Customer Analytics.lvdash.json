@@ -45,6 +45,14 @@
           }
         ]
       }
+    },
+    {
+      "name": "current_user",
+      "displayName": "Current User",
+      "queryLines": [
+        "SELECT\n",
+        "  current_user() AS username"
+      ]
     }
   ],
   "pages": [
@@ -145,7 +153,7 @@
           },
           "position": {
             "x": 0,
-            "y": 0,
+            "y": 2,
             "width": 12,
             "height": 6
           }
@@ -198,9 +206,51 @@
           },
           "position": {
             "x": 0,
-            "y": 6,
+            "y": 8,
             "width": 12,
             "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "current_user_name",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "current_user",
+                  "fields": [
+                    {
+                      "name": "max(username)",
+                      "expression": "MAX(`username`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Current User"
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "max(username)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
           }
         }
       ],
